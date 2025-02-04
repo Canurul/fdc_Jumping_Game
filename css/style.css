@@ -1,0 +1,93 @@
+:root {
+    --obstacle-move-duration: 3s;
+    --obstacle-move-delay: 2s;
+    --jump-duration: 1s;
+    --canvas-width: 600px;
+    --canvas-height: 200px;
+    --player-width: 50px;
+    --player-height: 50px;
+    --obstacle-width: 20px;
+    --obstacle-height: 50px;
+    --jump-height: 100px;
+    --obstacle-move-distance: calc((var(--canvas-width) - var(--obstacle-width))*-1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+}
+
+.canvas {
+    width: var(--canvas-width);
+    height: var(--canvas-height);
+    border: 1px solid black;
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+}
+
+.player {
+    width: var(--player-width);
+    height: var(--player-height);
+    background-color: blue;
+    transform-origin: bottom;
+}
+
+.obstacle {
+    width: var(--obstacle-width);
+    height: var(--obstacle-height);
+    background-color: red;
+    transform-origin: left;
+}
+
+.pause {
+    animation-play-state: paused;
+}
+
+.jump {
+    animation-name: player_jump;
+    animation-duration: var(--jump-duration);
+    animation-timing-function: linear;
+}
+
+.move {
+    animation-name: obstacle_move;
+    animation-duration: var(--obstacle-move-duration);
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-delay: var(--obstacle-move-delay);
+}
+
+@keyframes obstacle_move {
+    from {
+        transform: translateX(0px);
+    }
+
+    to {
+        transform: translateX(var(--obstacle-move-distance));
+    }
+}
+
+@keyframes player_jump {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(calc(var(--jump-height) * -1));
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}
