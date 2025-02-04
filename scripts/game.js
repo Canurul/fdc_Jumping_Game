@@ -65,21 +65,43 @@ const reset = function () {
 
     is_player_in_hight_danger = false;
     is_player_in_side_danger = false;
+    is_obstacle_moving = false;
+    is_player_jumping = false;
+
+    console.log("reset");
 
     is_game_over = false;
 }
 
+const jump = function () {
+    if (is_player_jumping || !is_obstacle_moving)
+        return;
+
+    if (!PLAYER.classList.contains('jump'))
+        PLAYER.classList.add('jump');
+
+    is_player_jumping = true;
+}
+
+const startObstacle = function () {
+    if (is_obstacle_moving)
+        return;
+
+    if (!OBSTACLE.classList.contains('move'))
+        OBSTACLE.classList.add('move');
+
+    is_obstacle_moving = true;
+}
+
 document.body.onkeyup = function (e) {
-    if (e.code == "Enter" || e.keyCode == "32") {
+    if (e.code == "Enter" || e.keyCode == 13) {
         reset();
     }
 
     if (e.key == " " || e.code == "Space" || e.keyCode == 32) {
-        if (!PLAYER.classList.contains('jump'))
-            PLAYER.classList.add('jump');
+        jump();
 
-        if (!OBSTACLE.classList.contains('move'))
-            OBSTACLE.classList.add('move');
+        startObstacle();
     }
 }
 
@@ -104,6 +126,7 @@ OBSTACLE.addEventListener("animationiteration", function (e) {
 PLAYER.addEventListener("animationstart", function (e) {
     if (e.animationName == 'player_jump') {
 
+        is_player_jumping = false;
         let timeToSafety = calculateTimeToHightSafety();
         let timeBackDown = (playerJumpDuration * 1000) - timeToSafety;
 
@@ -126,6 +149,8 @@ PLAYER.addEventListener("animationend", function (e) {
 let is_game_over = false;
 let is_player_in_hight_danger = false;
 let is_player_in_side_danger = false;
+let is_player_jumping = false;
+let is_obstacle_moving = false;
 let timeoutToHightEscape = null;
 let timeoutToHightDanger = null;
 let timeoutToSideDanger = null;
