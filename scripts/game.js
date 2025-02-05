@@ -63,7 +63,7 @@ const reset = function () {
     PLAYER.classList.remove('jump');
     PLAYER.classList.remove('pause');
 
-    is_player_in_hight_danger = false;
+    is_player_in_hight_danger = true;
     is_player_in_side_danger = false;
     is_obstacle_moving = false;
     is_player_jumping = false;
@@ -147,7 +147,7 @@ PLAYER.addEventListener("animationend", function (e) {
 });
 
 let is_game_over = false;
-let is_player_in_hight_danger = false;
+let is_player_in_hight_danger = true;
 let is_player_in_side_danger = false;
 let is_player_jumping = false;
 let is_obstacle_moving = false;
