@@ -2,6 +2,7 @@
     --obstacle-move-duration: 3s;
     --obstacle-move-delay: 0s;
     --jump-duration: 1s;
+    --animate-player-duration: 0.3s;
     --canvas-width: 600px;
     --canvas-height: 200px;
     --player-width: 80px;
@@ -80,6 +81,31 @@ body {
     animation-timing-function: linear;
     animation-iteration-count: infinite;
     animation-delay: var(--obstacle-move-delay);
+}
+
+.animate_player{
+    animation-name: animate_player;
+    animation-duration: var(--animate-player-duration);
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+@keyframes animate_player {
+    0% {
+        background-image: url('../Images/dino2.png');
+    }
+
+    25% {
+        background-image: url('../Images/dino3.png');
+    }
+
+    50% {
+        background-image: url('../Images/dino4.png');
+    }
+
+    100% {
+        background-image: url('../Images/dino5.png');
+    }
 }
 
 @keyframes obstacle_move {
