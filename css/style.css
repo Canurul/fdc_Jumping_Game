@@ -116,6 +116,10 @@ body {
     }
 }
 
+.dead {
+    background-image: url(../images/dino6.png) !important;
+}
+
 @keyframes obstacle_move {
     from {
         transform: translateX(0px);
