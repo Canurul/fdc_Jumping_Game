@@ -3,13 +3,13 @@
     --obstacle-move-delay: 0s;
     --jump-duration: 1s;
     --animate-player-duration: 0.3s;
-    --canvas-width: 600px;
-    --canvas-height: 200px;
-    --player-width: 80px;
-    --player-height: 50px;
+    --canvas-width: 800px;
+    --canvas-height: 300px;
+    --player-width: 90px;
+    --player-height: 60px;
     --obstacle-width: 20px;
     --obstacle-height: 50px;
-    --jump-height: 100px;
+    --jump-height: 150px;
     --obstacle-move-distance: calc((var(--canvas-width) - var(--obstacle-width))*-1);
 }
 
@@ -83,7 +83,7 @@ body {
     animation-delay: var(--obstacle-move-delay);
 }
 
-.animate_player{
+.animate_player {
     animation-name: animate_player;
     animation-duration: var(--animate-player-duration);
     animation-timing-function: linear;
@@ -92,19 +92,27 @@ body {
 
 @keyframes animate_player {
     0% {
+        background-image: url('../Images/dino1.png');
+    }
+
+    20% {
         background-image: url('../Images/dino2.png');
     }
 
-    25% {
+    40% {
         background-image: url('../Images/dino3.png');
     }
 
-    50% {
+    60% {
         background-image: url('../Images/dino4.png');
     }
 
-    100% {
+    80% {
         background-image: url('../Images/dino5.png');
+    }
+
+    100% {
+        background-image: url('../Images/dino1.png');
     }
 }
 
