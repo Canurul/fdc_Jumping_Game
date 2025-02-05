@@ -62,6 +62,7 @@ const reset = function () {
     OBSTACLE.classList.remove('pause');
     PLAYER.classList.remove('jump');
     PLAYER.classList.remove('pause');
+    PLAYER.classList.remove('animate_player');
 
     is_player_in_hight_danger = true;
     is_player_in_side_danger = false;
@@ -77,20 +78,35 @@ const jump = function () {
     if (is_player_jumping || !is_obstacle_moving)
         return;
 
-    if (!PLAYER.classList.contains('jump'))
-        PLAYER.classList.add('jump');
-
-    is_player_jumping = true;
+    removeClass('animate_player', PLAYER);
+    addClass('jump', PLAYER);
 }
 
-const startObstacle = function () {
+const land = function () {
+    is_player_jumping = false;
+
+    removeClass('jump', PLAYER);
+    addClass('animate_player', PLAYER);
+}
+
+const start = function () {
     if (is_obstacle_moving)
         return;
 
-    if (!OBSTACLE.classList.contains('move'))
-        OBSTACLE.classList.add('move');
+    addClass('move', OBSTACLE);
+    addClass('animate_player', PLAYER);
 
     is_obstacle_moving = true;
+}
+
+const addClass = function (item, element) {
+    if (!element.classList.contains(item))
+        element.classList.add(item);
+}
+
+const removeClass = function (item, element) {
+    if (element.classList.contains(item))
+        element.classList.remove(item)
 }
 
 document.body.onkeyup = function (e) {
@@ -101,7 +117,7 @@ document.body.onkeyup = function (e) {
     if (e.key == " " || e.code == "Space" || e.keyCode == 32) {
         jump();
 
-        startObstacle();
+        start();
     }
 }
 
@@ -125,8 +141,8 @@ OBSTACLE.addEventListener("animationiteration", function (e) {
 
 PLAYER.addEventListener("animationstart", function (e) {
     if (e.animationName == 'player_jump') {
+        is_player_jumping = true;
 
-        is_player_jumping = false;
         let timeToSafety = calculateTimeToHightSafety();
         let timeBackDown = (playerJumpDuration * 1000) - timeToSafety;
 
@@ -142,7 +158,7 @@ PLAYER.addEventListener("animationstart", function (e) {
 
 PLAYER.addEventListener("animationend", function (e) {
     if (e.animationName == 'player_jump') {
-        PLAYER.classList.remove('jump')
+        land();
     }
 });
 
