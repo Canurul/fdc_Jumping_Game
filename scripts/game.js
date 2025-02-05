@@ -26,6 +26,7 @@ const gameOver = function () {
 
     OBSTACLE.classList.add('pause');
     PLAYER.classList.add('pause');
+    PLAYER.classList.add('dead');
 
     clearTimeout(timeoutToHightDanger);
     clearTimeout(timeoutToHightEscape);
@@ -63,6 +64,7 @@ const reset = function () {
     PLAYER.classList.remove('jump');
     PLAYER.classList.remove('pause');
     PLAYER.classList.remove('animate_player');
+    PLAYER.classList.remove('dead');
 
     is_player_in_hight_danger = true;
     is_player_in_side_danger = false;
