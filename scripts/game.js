@@ -107,8 +107,8 @@ document.body.onkeyup = function (e) {
 
 OBSTACLE.addEventListener("animationstart", function (e) {
     if (e.animationName == 'obstacle_move') {
-        timeoutToSideDanger = setTimeout((setObstacleInPlayerRange) => {
-            setObstacleInPlayerRange(true);
+        timeoutToSideDanger = setTimeout((setPlayerInSideDanger) => {
+            setPlayerInSideDanger(true);
         }, calculateTimeToSideImpact(), setPlayerInSideDanger);
     }
 });
@@ -117,8 +117,8 @@ OBSTACLE.addEventListener("animationiteration", function (e) {
     if (e.animationName == 'obstacle_move') {
         setPlayerInSideDanger(false);
 
-        timeoutToSideDanger = setTimeout((setObstacleInPlayerRange) => {
-            setObstacleInPlayerRange(true);
+        timeoutToSideDanger = setTimeout((setPlayerInSideDanger) => {
+            setPlayerInSideDanger(true);
         }, calculateTimeToSideImpact(), setPlayerInSideDanger);
     }
 });
