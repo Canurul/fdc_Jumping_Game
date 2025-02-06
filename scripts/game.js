@@ -34,11 +34,11 @@ const getObstacle = function () {
     }
 
     let newObstacle;
-    if(OBSTACLES.length != 0){
+    if (OBSTACLES.length != 0) {
         newObstacle = ORIGINAL_OBSTACLE.cloneNode();
         ORIGINAL_OBSTACLE.parentNode.appendChild(newObstacle);
     }
-    else{
+    else {
         newObstacle = ORIGINAL_OBSTACLE;
     }
 
@@ -104,7 +104,7 @@ const clearObstacleVisuals = function (element) {
 }
 
 const calculateTimeToSideImpact = function () {
-    let result = ((CANVAS_WIDTH - PLAYER_WIDTH) / CANVAS_WIDTH) * OBSTACLE_MOVE_DURATION;
+    let result = ((CANVAS_WIDTH - PLAYER_WIDTH - OBSTACLE_WIDTH / 2) / CANVAS_WIDTH) * OBSTACLE_MOVE_DURATION;
     return result * 1000;
 }
 
