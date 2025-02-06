@@ -16,6 +16,9 @@ const TIMEOUTS = [];
 const VISUALS = ['obstacle1_visuals', 'obstacle2_visuals', 'obstacle3_visuals'];
 
 const initObstacle = function (obstacle) {
+
+    VISUALS.forEach(visual => obstacle.classList.remove(visual));
+    
     obstacle.classList.add(VISUALS[Math.floor(Math.random() * VISUALS.length)]);
 
     let startPosition = OBSTACLES.indexOf(obstacle) * OBSTACLE_WIDTH;
