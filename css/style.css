@@ -92,27 +92,27 @@ body {
 
 @keyframes animate_player {
     0% {
-        background-image: url('../Images/dino1.png');
+        background-image: url(../Images/dino1.png);
     }
 
     20% {
-        background-image: url('../Images/dino2.png');
+        background-image: url(../Images/dino2.png);
     }
 
     40% {
-        background-image: url('../Images/dino3.png');
+        background-image: url(../Images/dino3.png);
     }
 
     60% {
-        background-image: url('../Images/dino4.png');
+        background-image: url(../Images/dino4.png);
     }
 
     80% {
-        background-image: url('../Images/dino5.png');
+        background-image: url(../Images/dino5.png);
     }
 
     100% {
-        background-image: url('../Images/dino1.png');
+        background-image: url(../Images/dino1.png);
     }
 }
 
