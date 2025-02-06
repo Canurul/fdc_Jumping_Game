@@ -1,5 +1,5 @@
 const PLAYER = document.querySelector(".player");
-const OBSTACLE = document.querySelector(".obstacle");
+const ORIGINAL_OBSTACLE = document.querySelector(".obstacle");
 
 const BODY_COMPUTED_STYLE = window.getComputedStyle(document.body);
 const CANVAS_WIDTH = parseInt(BODY_COMPUTED_STYLE.getPropertyValue('--canvas-width'));
@@ -35,11 +35,11 @@ const getObstacle = function () {
 
     let newObstacle;
     if(OBSTACLES.length != 0){
-        newObstacle = OBSTACLE.cloneNode();
-        OBSTACLE.parentNode.appendChild(newObstacle);
+        newObstacle = ORIGINAL_OBSTACLE.cloneNode();
+        ORIGINAL_OBSTACLE.parentNode.appendChild(newObstacle);
     }
     else{
-        newObstacle = OBSTACLE;
+        newObstacle = ORIGINAL_OBSTACLE;
     }
 
     subscribeToEvents(newObstacle);
