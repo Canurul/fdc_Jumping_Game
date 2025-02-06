@@ -70,7 +70,7 @@ body {
 }
 
 .obstacle1_visuals {
-    background-image: url('../images/car.png');
+    background-image: url('../images/iceCream.png');
     background-size: var(--obstacle-width) var(--obstacle-height);
     background-repeat: no-repeat;
     background-position: center;
