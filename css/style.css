@@ -1,6 +1,6 @@
 :root {
     --obstacle-move-duration: 3s;
-    --obstacle-move-delay: 0s;
+    --obstacle-start-position: 0px;
     --jump-duration: 1s;
     --animate-player-duration: 0.3s;
     --canvas-width: 800px;
@@ -10,7 +10,7 @@
     --obstacle-width: 20px;
     --obstacle-height: 50px;
     --jump-height: 150px;
-    --obstacle-move-distance: calc((var(--canvas-width) - var(--obstacle-width))*-1);
+    --obstacle-move-distance: 0px;
 }
 
 * {
@@ -58,11 +58,27 @@ body {
     transform-origin: bottom;
 }
 
+.obstacles {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
 .obstacle {
     width: var(--obstacle-width);
     height: var(--obstacle-height);
-    background-color: red;
     transform-origin: left;
+}
+
+.obstacle1_visuals {
+    background-color: red;
+}
+
+.obstacle2_visuals {
+    background-color: blue;
+}
+
+.obstacle3_visuals {
+    background-color: black;
 }
 
 .pause {
@@ -79,8 +95,6 @@ body {
     animation-name: obstacle_move;
     animation-duration: var(--obstacle-move-duration);
     animation-timing-function: linear;
-    animation-iteration-count: infinite;
-    animation-delay: var(--obstacle-move-delay);
 }
 
 .animate_player {
@@ -122,7 +136,7 @@ body {
 
 @keyframes obstacle_move {
     from {
-        transform: translateX(0px);
+        transform: translateX(var(--obstacle-start-position));
     }
 
     to {
