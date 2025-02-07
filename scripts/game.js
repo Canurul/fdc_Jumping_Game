@@ -16,6 +16,11 @@ const OBSTACLES = [];
 const TIMEOUTS = []; 
 const VISUALS = ['obstacle1_visuals', 'obstacle2_visuals', 'obstacle3_visuals'];
 
+const sounds = {
+    background: document.getElementById('backgroundMusic'),
+    jump: document.getElementById('jumpSound'),
+    collision: document.getElementById('collisionSound')
+};
 let score = 0; // Initialize score
 let has_game_started = false;
 let is_game_over = false;
@@ -24,6 +29,9 @@ let is_player_in_side_danger = false;
 let is_player_jumping = false;
 
 const initObstacle = function (obstacle) {
+
+    VISUALS.forEach(visual => obstacle.classList.remove(visual));
+
     obstacle.classList.add(VISUALS[Math.floor(Math.random() * VISUALS.length)]);
     
     let startPosition = OBSTACLES.indexOf(obstacle) * OBSTACLE_WIDTH;
@@ -129,7 +137,11 @@ const calculateTimeToHightSafety = function () {
 }
 
 const gameOver = function () {
-    if (is_game_over) return;
+    if (is_game_over)
+        return;
+    sounds.collision.play();
+    sounds.background.pause();
+    sounds.background.currentTime = 0
 
     TIMEOUTS.forEach((element) => clearTimeout(element));
     OBSTACLES.forEach((element) => { element.classList.add('pause'); });
@@ -177,6 +189,9 @@ const reset = function () {
 }
 
 const jump = function () {
+    if (is_player_jumping || !has_game_started)
+        return;
+    sounds.jump.play();
     if (is_player_jumping || !has_game_started) return;
 
     removeClass('animate_player', PLAYER);
@@ -190,6 +205,9 @@ const land = function () {
 }
 
 const startGame = function () {
+    if (has_game_started)
+        return;
+    sounds.background.play()
     if (has_game_started) return;
 
     spawnPlayer();

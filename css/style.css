@@ -70,18 +70,27 @@ body {
 }
 
 .obstacle1_visuals {
-    background-color: red;
+    background-image: url(../images/iceCream.png);
+    background-size: var(--obstacle-width) var(--obstacle-height);
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 .obstacle2_visuals {
-    background-color: blue;
+    background-image: url(../images/obstace_1.png);
+    background-size: var(--obstacle-width) var(--obstacle-height);
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 .obstacle3_visuals {
-    background-color: black;
+    background-image: url(../images/tree.png);
+    background-size: var(--obstacle-width) var(--obstacle-height);
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
-.pause {
+.pause { 
     animation-play-state: paused;
 }
 
