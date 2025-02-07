@@ -91,7 +91,6 @@ body {
 .canvas {
     width: var(--canvas-width);
     height: var(--canvas-height);
-    border: 1px solid black;
     display: flex;
     flex-direction: column-reverse;
 }
