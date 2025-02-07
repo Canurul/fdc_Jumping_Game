@@ -66,6 +66,7 @@ body {
 .instruction-text {
     font-family: 'Sixtyfour', sans-serif;
     font-size: 1.5rem;
+    text-align: center;
 }
 
 .game-canvas {
@@ -263,5 +264,19 @@ body {
 
     100% {
         font-size: 1.5rem;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    :root {
+        --canvas-width: 400px;
+        --obstacle-move-duration: 2s;
+        --player-width: 60px;
+        --player-height: 40px;
+        --obstacle-width: 14px;
+        --obstacle-wide-width: 20px;
+        --obstacle-height: 37px;
+        --obstacle-tall-height: 50px;
+        --jump-height: 100px;
     }
 }
