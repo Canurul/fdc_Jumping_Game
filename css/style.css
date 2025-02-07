@@ -15,7 +15,9 @@
     --player-width: 90px;
     --player-height: 60px;
     --obstacle-width: 20px;
+    --obstacle-wide-width: 40px;
     --obstacle-height: 50px;
+    --obstacle-tall-height: 75px;
     --jump-height: 150px;
     --obstacle-move-distance: 0px;
     --header-bg-color: #2c3e50;
@@ -35,7 +37,8 @@ body {
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    min-height: 100vh;
+    height: 100vh;
+    width: 100vw;
     margin: 0;
     padding: 0;
 }
@@ -43,7 +46,7 @@ body {
 .game-header {
     font-family: 'Sixtyfour', sans-serif;
     text-align: center;
-    padding: 20px;
+    padding: 2rem;
     font-size: 1.5rem;
     font-weight: bold;
     background-color: var(--header-bg-color);
@@ -52,7 +55,12 @@ body {
 }
 
 .game-instructions {
-    margin: 10px 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1 0 auto;
+    margin: 1rem 0;
+    max-height: 4rem;
 }
 
 .instruction-text {
@@ -66,17 +74,9 @@ body {
     align-items: center;
 }
 
-.instruction-text.visible {
-    opacity: 1;
-}
-
 .score-section {
     text-align: center;
-    padding: 20px 0;
-}
-
-.score-display {
-    margin: 10px 0;
+    margin: 1rem 0;
 }
 
 .game-footer {
@@ -120,37 +120,49 @@ body {
 .obstacles {
     display: flex;
     flex-direction: row-reverse;
+    align-items: end;
 }
 
 .obstacle {
+    transform-origin: left;
+}
+
+.obstacle-normal {
     width: var(--obstacle-width);
     height: var(--obstacle-height);
-    transform-origin: left;
+}
+
+.obstacle-tall {
+    width: var(--obstacle-width);
+    height: var(--obstacle-tall-height);
+}
+
+.obstacle-wide {
+    width: var(--obstacle-wide-width);
+    height: var(--obstacle-height);
 }
 
 .obstacle1_visuals {
     background-image: url(../images/iceCream.png);
     background-size: var(--obstacle-width) var(--obstacle-height);
-    background-repeat: no-repeat;
-    background-position: center;
+    background-position-y: bottom;
 }
 
 .obstacle2_visuals {
     background-image: url(../images/obstace_1.png);
-    background-size: var(--obstacle-width) var(--obstacle-height);
-    background-repeat: no-repeat;
-    background-position: center;
+    background-size: var(--obstacle-wide-width) var(--obstacle-height);
+    background-position-y: bottom;
 }
 
 .obstacle3_visuals {
     background-image: url(../images/tree.png);
-    background-size: var(--obstacle-width) var(--obstacle-height);
-    background-repeat: no-repeat;
-    background-position: center;
+    background-size: var(--obstacle-width) var(--obstacle-tall-height);
+    background-position-y: bottom;
 }
 
 .pause {
     animation-play-state: paused;
+    background-position-y: bottom;
 }
 
 .jump {
@@ -176,10 +188,17 @@ body {
     background-image: url(../images/dino6.png) !important;
 }
 
-.score-display {
+.score {
     font-family: 'Sixtyfour', sans-serif;
     font-size: 1.2rem;
     margin: 20px;
+}
+
+.intro {
+    animation-name: intro;
+    animation-duration: 0.2s;
+    animation-timing-function: linear;
+    animation-iteration-count: 1;
 }
 
 @keyframes animate_player {
@@ -209,6 +228,7 @@ body {
 }
 
 @keyframes obstacle_move {
+
     from {
         transform: translateX(var(--obstacle-start-position));
     }
@@ -229,5 +249,19 @@ body {
 
     100% {
         transform: translateY(0px);
+    }
+}
+
+@keyframes intro {
+    0% {
+        font-size: 1.5rem;
+    }
+
+    50% {
+        font-size: 4rem;
+    }
+
+    100% {
+        font-size: 1.5rem;
     }
 }
