@@ -38,8 +38,6 @@
 
 .instruction-text {
     font-size: 1.5em;
-    opacity: 0;
-    transition: opacity 0.3s;
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
@@ -221,15 +219,6 @@ body {
         transform: translateY(0px);
     }
 }
-
-
-
-
-
-
-
-
-
 
         #score {
             font-size: 24px;

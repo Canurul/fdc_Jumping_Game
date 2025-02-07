@@ -62,10 +62,9 @@ const getObstacle = function () {
     return newObstacle;
 }
 
-const showInstruction = (id) => {
-    document.querySelectorAll('.instruction-text').forEach(el => el.classList.remove('visible'));
-    const element = document.getElementById(id);
-    element.classList.add('visible');
+const showInstruction = (message) => {
+    const instructionElement = document.getElementById('gameInstruction');
+    instructionElement.textContent = message;
 };
 
 const spawnObstacles = function () {
@@ -143,8 +142,7 @@ const calculateTimeToHightSafety = function () {
 }
 
 const gameOver = function () {
-    if (is_game_over)
-        return;
+    if (is_game_over) return;
     sounds.collision.play();
     sounds.background.pause();
     sounds.background.currentTime = 0
@@ -154,8 +152,8 @@ const gameOver = function () {
     PLAYER.classList.add('pause');
     PLAYER.classList.add('dead');
 
-    showInstruction('gameOver');
-    setTimeout(() => showInstruction('resetInstruction'), 2000);
+    showInstruction('GAME OVER');
+    setTimeout(() => showInstruction('Press ENTER to RESET'), 2000);
 
     console.log("gameOver");
     is_game_over = true;
@@ -192,7 +190,7 @@ const reset = function () {
 
     score = 0;
     updateScoreDisplay();
-    showInstruction('pressSpace');
+    showInstruction('Press SPACE to START');
 
     console.log("reset");
     is_game_over = false;
@@ -202,6 +200,7 @@ const jump = function () {
     if (is_player_jumping || !has_game_started)
         return;
     sounds.jump.play();
+
 
     removeClass('animate_player', PLAYER);
     addClass('jump', PLAYER);
@@ -222,7 +221,7 @@ const startGame = function () {
     spawnPlayer();
     spawnObstacles();
     has_game_started = true;
-    showInstruction('jumpInstruction');
+    showInstruction('Press SPACE to JUMP');
 }
 
 const addClass = function (item, element) {
@@ -233,7 +232,7 @@ const removeClass = function (item, element) {
     if (element.classList.contains(item)) element.classList.remove(item);
 }
 
-showInstruction('pressSpace');
+showInstruction('Press SPACE to START');
 
 document.body.onkeyup = function (e) {
     if (e.code == "Enter" || e.keyCode == 13) {
