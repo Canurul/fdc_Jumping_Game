@@ -133,7 +133,9 @@ body {
 
 .obstacle1_visuals {
     background-image: url(../images/iceCream.png);
-    background-size: var(--obstacle-width) var(--obstacle-height);
+    width: calc(var(--obstacle-width) * 1.5); 
+    height: calc(var(--obstacle-height) * 1.2);
+    background-size: 100% 100%;
     background-repeat: no-repeat;
     background-position: center;
 }
@@ -147,7 +149,9 @@ body {
 
 .obstacle3_visuals {
     background-image: url(../images/tree.png);
-    background-size: var(--obstacle-width) var(--obstacle-height);
+    width:var(--obstacle-width); 
+    height: calc(var(--obstacle-height) * 2);
+    background-size: 100% 100%;
     background-repeat: no-repeat;
     background-position: center;
 }
