@@ -180,6 +180,13 @@ const subscribeToEvents = function (element) {
         if (e.animationName == 'obstacle_move') {
             setPlayerInSideDanger(false);
             clearObstacleVisuals(e.target);
+
+            if (obstacle_widths.length >= OBSTACLES.length)
+                obstacle_widths.splice(0, 1);
+        
+            if (obstacle_heights.length >= OBSTACLES.length)
+                obstacle_heights.splice(0, 1);
+
             removeClass('move', e.target);
             incrementScore();
         }
@@ -208,12 +215,6 @@ const initObstacle = function (obstacle) {
     obstacle.classList.add(obstacleType);
     obstacle.classList.remove('obstacle-normal', 'obstacle-tall', 'obstacle-wide');
 
-    if (obstacle_widths.length >= OBSTACLES.length)
-        obstacle_widths.splice(0, 1);
-
-    if (obstacle_heights.length >= OBSTACLES.length)
-        obstacle_heights.splice(0, 1);
-
     switch (obstacleType) {
         case VISUALS[0]:
             obstacle_widths.push(OBSTACLE_NORMAL_WIDTH);
@@ -232,8 +233,8 @@ const initObstacle = function (obstacle) {
             break;
     }
 
-    let startPosition = obstacle_widths.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-    let endPosition = (CANVAS_WIDTH - obstacle_widths.slice(-1) - startPosition) * -1;
+    let startPosition = obstacle_widths.slice(0, 1);
+    let endPosition = (CANVAS_WIDTH - obstacle_widths.reduce((accumulator, currentValue) => accumulator + currentValue, 0)) * -1;
     obstacle.style.setProperty('--obstacle-start-position', `${startPosition}px`);
     obstacle.style.setProperty('--obstacle-move-distance', `${endPosition}px`);
     addClass('move', obstacle);
@@ -289,14 +290,14 @@ const updateScoreDisplay = function () {
 
 const calculateTimeToSideImpact = function () {
     let width = obstacle_widths.slice(-1);
-    let result = ((CANVAS_WIDTH - PLAYER_WIDTH) / CANVAS_WIDTH) * OBSTACLE_MOVE_DURATION;
+    let result = (((CANVAS_WIDTH - PLAYER_WIDTH - width * 0.2) / CANVAS_WIDTH)) * OBSTACLE_MOVE_DURATION;
     return result * 1000;
 }
 
 const calculateTimeToHightSafety = function () {
     let height = obstacle_heights.slice(-1);
     let result = ((height / PLAYER_JUMP_HEIGHT) * (PLAYER_JUMP_DURATION / 2));
-    return result * 1000;
+    return result.toFixed(2) * 1000;
 }
 
 const addClass = function (item, element) {
