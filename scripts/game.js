@@ -12,8 +12,10 @@ const OBSTACLE_HEIGHT = parseInt(BODY_COMPUTED_STYLE.getPropertyValue('--obstacl
 const OBSTACLE_WIDTH = parseInt(BODY_COMPUTED_STYLE.getPropertyValue('--obstacle-width'));
 const OBSTACLES_SPAWN_FREQUENCY = 2500;
 
-const OBSTACLES = []; 
-const TIMEOUTS = []; 
+const GAME_INSTRUCTION_ELEMENT = document.querySelector('.instruction-text');
+
+const OBSTACLES = [];
+const TIMEOUTS = [];
 const VISUALS = ['obstacle1_visuals', 'obstacle2_visuals', 'obstacle3_visuals'];
 
 const sounds = {
@@ -21,63 +23,94 @@ const sounds = {
     jump: document.getElementById('jumpSound'),
     collision: document.getElementById('collisionSound')
 };
-let score = 0;
-let has_game_started = false;
-let is_game_over = false;
-let is_player_in_hight_danger = true;
-let is_player_in_side_danger = false;
-let is_player_jumping = false;
 
-const initObstacle = function (obstacle) {
+document.body.onkeyup = function (e) {
+    if (e.code == "Enter" || e.keyCode == 13) {
+        reset();
+    }
 
-    VISUALS.forEach(visual => obstacle.classList.remove(visual));
-
-    obstacle.classList.add(VISUALS[Math.floor(Math.random() * VISUALS.length)]);
-    
-    let startPosition = OBSTACLES.indexOf(obstacle) * OBSTACLE_WIDTH;
-    let endPosition = (CANVAS_WIDTH - OBSTACLE_WIDTH - startPosition) * -1;
-    obstacle.style.setProperty('--obstacle-start-position', `${startPosition}px`);
-    obstacle.style.setProperty('--obstacle-move-distance', `${endPosition}px`);
-    addClass('move', obstacle);
+    if (e.key == " " || e.code == "Space" || e.keyCode == 32) {
+        jump();
+        startGame();
+    }
 }
 
-const getObstacle = function () {
-    for (let i = 0; i < OBSTACLES.length; i++) {
-        let existingObstacle = OBSTACLES[i];
-        if (!existingObstacle.classList.contains('move'))
-            return existingObstacle;
-    }
+const startGame = function () {
+    if (has_game_started)
+        return;
+    sounds.background.play()
+    if (has_game_started) return;
 
-    let newObstacle;
-    if (OBSTACLES.length != 0) {
-        newObstacle = ORIGINAL_OBSTACLE.cloneNode();
-        ORIGINAL_OBSTACLE.parentNode.appendChild(newObstacle);
-    } else {
-        newObstacle = ORIGINAL_OBSTACLE;
-    }
+    spawnPlayer();
+    spawnObstacles();
+    has_game_started = true;
+    showInstruction('Press SPACE to JUMP');
+}
 
-    subscribeToEvents(newObstacle);
-    OBSTACLES.push(newObstacle);
+const gameOver = function () {
+    if (is_game_over) return;
+    sounds.collision.play();
+    sounds.background.pause();
+    sounds.background.currentTime = 0
 
-    return newObstacle;
+    TIMEOUTS.forEach((element) => clearTimeout(element));
+    OBSTACLES.forEach((element) => { element.classList.add('pause'); });
+    PLAYER.classList.add('pause');
+    PLAYER.classList.add('dead');
+
+    showInstruction('GAME OVER');
+    setTimeout(() => showInstruction('Press ENTER to RESET'), 2000);
+
+    console.log("gameOver");
+    is_game_over = true;
+}
+
+const jump = function () {
+    if (is_player_jumping || !has_game_started)
+        return;
+    sounds.jump.play();
+
+
+    removeClass('animate_player', PLAYER);
+    addClass('jump', PLAYER);
+}
+
+const land = function () {
+    is_player_jumping = false;
+    removeClass('jump', PLAYER);
+    addClass('animate_player', PLAYER);
+}
+
+const reset = function () {
+    if (!is_game_over) return;
+
+    OBSTACLES.forEach((element) => {
+        clearObstacleVisuals(element);
+        element.classList.remove('move');
+        element.classList.remove('pause');
+    });
+
+    PLAYER.classList.remove('jump');
+    PLAYER.classList.remove('pause');
+    PLAYER.classList.remove('animate_player');
+    PLAYER.classList.remove('dead');
+
+    is_player_in_hight_danger = true;
+    is_player_in_side_danger = false;
+    has_game_started = false;
+    is_player_jumping = false;
+
+    score = 0;
+    updateScoreDisplay();
+    showInstruction('Press SPACE to START');
+
+    console.log("reset");
+    is_game_over = false;
 }
 
 const showInstruction = (message) => {
-    const instructionElement = document.getElementById('gameInstruction');
-    instructionElement.textContent = message;
+    GAME_INSTRUCTION_ELEMENT.textContent = message;
 };
-
-const spawnObstacles = function () {
-    let newObstacle = getObstacle();
-    initObstacle(newObstacle);
-    
-    TIMEOUTS.push(setTimeout(spawnObstacles, OBSTACLES_SPAWN_FREQUENCY));
-}
-
-const spawnPlayer = function () {
-    subscribeToEvents(PLAYER);
-    addClass('animate_player', PLAYER);
-}
 
 const subscribeToEvents = function (element) {
     element.addEventListener("animationstart", function (e) {
@@ -117,6 +150,62 @@ const subscribeToEvents = function (element) {
     });
 }
 
+const setPlayerInHeightDanger = function (isInDanger) {
+    is_player_in_hight_danger = isInDanger;
+    if (is_player_in_side_danger && is_player_in_hight_danger) gameOver();
+}
+
+const setPlayerInSideDanger = function (isInDanger) {
+    is_player_in_side_danger = isInDanger;
+    if (is_player_in_side_danger && is_player_in_hight_danger) gameOver();
+}
+
+const initObstacle = function (obstacle) {
+
+    VISUALS.forEach(visual => obstacle.classList.remove(visual));
+
+    obstacle.classList.add(VISUALS[Math.floor(Math.random() * VISUALS.length)]);
+
+    let startPosition = OBSTACLES.indexOf(obstacle) * OBSTACLE_WIDTH;
+    let endPosition = (CANVAS_WIDTH - OBSTACLE_WIDTH - startPosition) * -1;
+    obstacle.style.setProperty('--obstacle-start-position', `${startPosition}px`);
+    obstacle.style.setProperty('--obstacle-move-distance', `${endPosition}px`);
+    addClass('move', obstacle);
+}
+
+const getObstacle = function () {
+    for (let i = 0; i < OBSTACLES.length; i++) {
+        let existingObstacle = OBSTACLES[i];
+        if (!existingObstacle.classList.contains('move'))
+            return existingObstacle;
+    }
+
+    let newObstacle;
+    if (OBSTACLES.length != 0) {
+        newObstacle = ORIGINAL_OBSTACLE.cloneNode();
+        ORIGINAL_OBSTACLE.parentNode.appendChild(newObstacle);
+    } else {
+        newObstacle = ORIGINAL_OBSTACLE;
+    }
+
+    subscribeToEvents(newObstacle);
+    OBSTACLES.push(newObstacle);
+
+    return newObstacle;
+}
+
+const spawnObstacles = function () {
+    let newObstacle = getObstacle();
+    initObstacle(newObstacle);
+
+    TIMEOUTS.push(setTimeout(spawnObstacles, OBSTACLES_SPAWN_FREQUENCY));
+}
+
+const spawnPlayer = function () {
+    subscribeToEvents(PLAYER);
+    addClass('animate_player', PLAYER);
+}
+
 const clearObstacleVisuals = function (element) {
     for (let i = 0; i < VISUALS.length; i++)
         removeClass(VISUALS[i], element);
@@ -141,89 +230,6 @@ const calculateTimeToHightSafety = function () {
     return result * 1000;
 }
 
-const gameOver = function () {
-    if (is_game_over) return;
-    sounds.collision.play();
-    sounds.background.pause();
-    sounds.background.currentTime = 0
-
-    TIMEOUTS.forEach((element) => clearTimeout(element));
-    OBSTACLES.forEach((element) => { element.classList.add('pause'); });
-    PLAYER.classList.add('pause');
-    PLAYER.classList.add('dead');
-
-    showInstruction('GAME OVER');
-    setTimeout(() => showInstruction('Press ENTER to RESET'), 2000);
-
-    console.log("gameOver");
-    is_game_over = true;
-}
-
-const setPlayerInHeightDanger = function (isInDanger) {
-    is_player_in_hight_danger = isInDanger;
-    if (is_player_in_side_danger && is_player_in_hight_danger) gameOver();
-}
-
-const setPlayerInSideDanger = function (isInDanger) {
-    is_player_in_side_danger = isInDanger;
-    if (is_player_in_side_danger && is_player_in_hight_danger) gameOver();
-}
-
-const reset = function () {
-    if (!is_game_over) return;
-
-    OBSTACLES.forEach((element) => {
-        clearObstacleVisuals(element);
-        element.classList.remove('move');
-        element.classList.remove('pause');
-    });
-
-    PLAYER.classList.remove('jump');
-    PLAYER.classList.remove('pause');
-    PLAYER.classList.remove('animate_player');
-    PLAYER.classList.remove('dead');
-
-    is_player_in_hight_danger = true;
-    is_player_in_side_danger = false;
-    has_game_started = false;
-    is_player_jumping = false;
-
-    score = 0;
-    updateScoreDisplay();
-    showInstruction('Press SPACE to START');
-
-    console.log("reset");
-    is_game_over = false;
-}
-
-const jump = function () {
-    if (is_player_jumping || !has_game_started)
-        return;
-    sounds.jump.play();
-
-
-    removeClass('animate_player', PLAYER);
-    addClass('jump', PLAYER);
-}
-
-const land = function () {
-    is_player_jumping = false;
-    removeClass('jump', PLAYER);
-    addClass('animate_player', PLAYER);
-}
-
-const startGame = function () {
-    if (has_game_started)
-        return;
-    sounds.background.play()
-    if (has_game_started) return;
-
-    spawnPlayer();
-    spawnObstacles();
-    has_game_started = true;
-    showInstruction('Press SPACE to JUMP');
-}
-
 const addClass = function (item, element) {
     if (!element.classList.contains(item)) element.classList.add(item);
 }
@@ -232,17 +238,11 @@ const removeClass = function (item, element) {
     if (element.classList.contains(item)) element.classList.remove(item);
 }
 
+let score = 0;
+let has_game_started = false;
+let is_game_over = false;
+let is_player_in_hight_danger = true;
+let is_player_in_side_danger = false;
+let is_player_jumping = false;
+
 showInstruction('Press SPACE to START');
-
-document.body.onkeyup = function (e) {
-    if (e.code == "Enter" || e.keyCode == 13) {
-        reset();
-    }
-
-    if (e.key == " " || e.code == "Space" || e.keyCode == 32) {
-        jump();
-        startGame();
-    }
-}
-
-
