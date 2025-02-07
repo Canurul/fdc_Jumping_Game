@@ -23,6 +23,16 @@
     box-sizing: border-box;
 }
 
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
 .game-header {
     text-align: center;
     padding: 20px;
@@ -34,28 +44,14 @@
 }
 
 .game-instructions {
-    margin-top: 8rem;
-    text-align: center;
-    padding: 20px 0;
-    position: relative;
-    width: 100%;
+    margin: 10px 0;
 }
 
 .instruction-text {
     font-size: 1.5em;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 10;
-    padding: 5px 15px;
-    border-radius: 5px;
 }
 
 .game-canvas {
-
-    position: relative;
-    z-index: 1;
-    flex-grow: 1;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -80,14 +76,6 @@
     background-color: var(--footer-bg-color);
     color: var(--footer-text-color);
     width: 100%;
-}
-
-body {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    margin: 0;
-    padding: 0;
 }
 
 .canvas {
@@ -152,7 +140,7 @@ body {
     background-position: center;
 }
 
-.pause { 
+.pause {
     animation-play-state: paused;
 }
 
@@ -173,6 +161,15 @@ body {
     animation-duration: var(--animate-player-duration);
     animation-timing-function: linear;
     animation-iteration-count: infinite;
+}
+
+.dead {
+    background-image: url(../images/dino6.png) !important;
+}
+
+.score-display {
+    font-size: 1.2rem;
+    margin: 20px;
 }
 
 @keyframes animate_player {
@@ -201,10 +198,6 @@ body {
     }
 }
 
-.dead {
-    background-image: url(../images/dino6.png) !important;
-}
-
 @keyframes obstacle_move {
     from {
         transform: translateX(var(--obstacle-start-position));
@@ -228,15 +221,3 @@ body {
         transform: translateY(0px);
     }
 }
-
-        #score {
-            font-size: 24px;
-            margin: 20px;
-        }
-        #start-button {
-            margin: 20px;
-            padding: 10px;
-            font-size: 16px;
-        }
-
-        

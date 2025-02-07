@@ -1,6 +1,6 @@
 const PLAYER = document.querySelector(".player");
 const ORIGINAL_OBSTACLE = document.querySelector(".obstacle");
-const SCORE_DISPLAY = document.getElementById('score');
+const SCORE_DISPLAY = document.querySelector('.score-display');
 
 const BODY_COMPUTED_STYLE = window.getComputedStyle(document.body);
 const CANVAS_WIDTH = parseInt(BODY_COMPUTED_STYLE.getPropertyValue('--canvas-width'));
@@ -19,9 +19,9 @@ const TIMEOUTS = [];
 const VISUALS = ['obstacle1_visuals', 'obstacle2_visuals', 'obstacle3_visuals'];
 
 const sounds = {
-    background: document.getElementById('backgroundMusic'),
-    jump: document.getElementById('jumpSound'),
-    collision: document.getElementById('collisionSound')
+    background: document.querySelector('.backgroundMusic'),
+    jump: document.querySelector('.jumpSound'),
+    collision: document.querySelector('.collisionSound')
 };
 
 document.body.onkeyup = function (e) {
