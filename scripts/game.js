@@ -1,6 +1,6 @@
 const PLAYER = document.querySelector(".player");
 const ORIGINAL_OBSTACLE = document.querySelector(".obstacle");
-const SCORE_DISPLAY = document.getElementById('score'); // Ensure this exists in your HTML
+const SCORE_DISPLAY = document.getElementById('score');
 
 const BODY_COMPUTED_STYLE = window.getComputedStyle(document.body);
 const CANVAS_WIDTH = parseInt(BODY_COMPUTED_STYLE.getPropertyValue('--canvas-width'));
@@ -21,7 +21,7 @@ const sounds = {
     jump: document.getElementById('jumpSound'),
     collision: document.getElementById('collisionSound')
 };
-let score = 0; // Initialize score
+let score = 0;
 let has_game_started = false;
 let is_game_over = false;
 let is_player_in_hight_danger = true;
@@ -61,6 +61,12 @@ const getObstacle = function () {
 
     return newObstacle;
 }
+
+const showInstruction = (id) => {
+    document.querySelectorAll('.instruction-text').forEach(el => el.classList.remove('visible'));
+    const element = document.getElementById(id);
+    element.classList.add('visible');
+};
 
 const spawnObstacles = function () {
     let newObstacle = getObstacle();
@@ -103,7 +109,7 @@ const subscribeToEvents = function (element) {
             setPlayerInSideDanger(false);
             clearObstacleVisuals(e.target);
             removeClass('move', e.target);
-            incrementScore(); // Increment score here
+            incrementScore();
         }
 
         if (e.animationName == 'player_jump') {
@@ -118,12 +124,12 @@ const clearObstacleVisuals = function (element) {
 }
 
 const incrementScore = function () {
-    score++; // Increase score by 1
-    updateScoreDisplay(); // Update displayed score
+    score++;
+    updateScoreDisplay();
 }
 
 const updateScoreDisplay = function () {
-    SCORE_DISPLAY.innerText = `Score: ${score}`; // Update the score display
+    SCORE_DISPLAY.innerText = `Score: ${score}`;
 }
 
 const calculateTimeToSideImpact = function () {
@@ -147,6 +153,9 @@ const gameOver = function () {
     OBSTACLES.forEach((element) => { element.classList.add('pause'); });
     PLAYER.classList.add('pause');
     PLAYER.classList.add('dead');
+
+    showInstruction('gameOver');
+    setTimeout(() => showInstruction('resetInstruction'), 2000);
 
     console.log("gameOver");
     is_game_over = true;
@@ -181,8 +190,9 @@ const reset = function () {
     has_game_started = false;
     is_player_jumping = false;
 
-    score = 0; // Reset score
-    updateScoreDisplay(); // Reset score display
+    score = 0;
+    updateScoreDisplay();
+    showInstruction('pressSpace');
 
     console.log("reset");
     is_game_over = false;
@@ -192,7 +202,6 @@ const jump = function () {
     if (is_player_jumping || !has_game_started)
         return;
     sounds.jump.play();
-    if (is_player_jumping || !has_game_started) return;
 
     removeClass('animate_player', PLAYER);
     addClass('jump', PLAYER);
@@ -213,6 +222,7 @@ const startGame = function () {
     spawnPlayer();
     spawnObstacles();
     has_game_started = true;
+    showInstruction('jumpInstruction');
 }
 
 const addClass = function (item, element) {
@@ -223,6 +233,8 @@ const removeClass = function (item, element) {
     if (element.classList.contains(item)) element.classList.remove(item);
 }
 
+showInstruction('pressSpace');
+
 document.body.onkeyup = function (e) {
     if (e.code == "Enter" || e.keyCode == 13) {
         reset();
@@ -230,7 +242,7 @@ document.body.onkeyup = function (e) {
 
     if (e.key == " " || e.code == "Space" || e.keyCode == 32) {
         jump();
-        startGame(); // Ensure the game starts correctly
+        startGame();
     }
 }
 

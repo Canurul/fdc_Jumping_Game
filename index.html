@@ -1,24 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./css/style.css" />
-    <script src="./scripts/game.js" defer></script>
-    <title>Jumping Game</title>
-  </head>
-  <body>
-    <div class="canvas">
-        <div class="ground"></div>
-        <div class="moving_objects">
-            <div class="player"></div>
-            <div class="obstacles">
-              <div class="obstacle"></div>
+    <title>DINO JUMP</title>
+</head>
+<body>
+    <header class="game-header">
+        Help DINO get to the JOB interview!
+    </header>
+
+    <section class="game-instructions">
+        <div id="pressSpace" class="instruction-text visible">Press SPACE to START</div>
+        <div id="jumpInstruction" class="instruction-text">Press SPACE to JUMP</div>
+        <div id="gameOver" class="instruction-text">GAME OVER</div>
+        <div id="resetInstruction" class="instruction-text">Press ENTER to RESET</div>
+    </section>
+
+    <section class="game-canvas">
+        <div class="canvas">
+            <div class="ground"></div>
+            <div class="moving_objects">
+                <div class="player"></div>
+                <div class="obstacles">
+                    <div class="obstacle"></div>
+                </div>
             </div>
         </div>
-    </div>
-    <div>Press Space to start</div>
-    <div>Press Enter to reset</div>
+    </section>
+
+    <section class="score-section">
+        <div id="score" class="score-display">Score: 0</div>
+    </section>
+
+    <footer class="game-footer">
+        DINO JUMP ©
+    </footer>
+
     <audio id="backgroundMusic" loop>
         <source src="./sounds/epicMusic.mp3" type="audio/mp3">
     </audio>
@@ -28,6 +47,7 @@
     <audio id="collisionSound">
         <source src="./sounds/collusion.mp3" type="audio/mp3">
     </audio>
-    <div id="score">Score: 0</div>
-  </body>
+
+    <script src="./scripts/game.js"></script>
+</body>
 </html>
