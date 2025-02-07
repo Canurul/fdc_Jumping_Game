@@ -1,3 +1,10 @@
+@font-face {
+    font-family: "Sixtyfour";
+    src: url(../fonts/Sixtyfour.ttf) format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
 :root {
     --obstacle-move-duration: 3s;
     --obstacle-start-position: 0px;
@@ -34,9 +41,10 @@ body {
 }
 
 .game-header {
+    font-family: 'Sixtyfour', sans-serif;
     text-align: center;
     padding: 20px;
-    font-size: 2em;
+    font-size: 1.5rem;
     font-weight: bold;
     background-color: var(--header-bg-color);
     color: var(--header-text-color);
@@ -48,7 +56,8 @@ body {
 }
 
 .instruction-text {
-    font-size: 1.5em;
+    font-family: 'Sixtyfour', sans-serif;
+    font-size: 1.5rem;
 }
 
 .game-canvas {
@@ -71,6 +80,7 @@ body {
 }
 
 .game-footer {
+    font-family: 'Sixtyfour', sans-serif;
     text-align: center;
     padding: 15px;
     background-color: var(--footer-bg-color);
@@ -168,6 +178,7 @@ body {
 }
 
 .score-display {
+    font-family: 'Sixtyfour', sans-serif;
     font-size: 1.2rem;
     margin: 20px;
 }
