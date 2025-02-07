@@ -289,7 +289,7 @@ const updateScoreDisplay = function () {
 
 const calculateTimeToSideImpact = function () {
     let width = obstacle_widths.slice(-1);
-    let result = ((CANVAS_WIDTH - PLAYER_WIDTH + width / 2) / CANVAS_WIDTH) * OBSTACLE_MOVE_DURATION;
+    let result = ((CANVAS_WIDTH - PLAYER_WIDTH) / CANVAS_WIDTH) * OBSTACLE_MOVE_DURATION;
     return result * 1000;
 }
 
