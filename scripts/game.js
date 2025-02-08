@@ -19,7 +19,7 @@ const TIME_BETWEEN_MESSAGES = 1000;
 const MAX_FREQUENCY = 1100;
 const MIN_FREQUENCY = 3000;
 const FREQUENCY_CHANGE_STEP = 500;
-const FREQUENCY_CHANGE_RATE = 5 * 1000;
+const FREQUENCY_CHANGE_RATE = 10 * 1000;
 
 document.body.onkeyup = function (e) {
     if (e.code == "Enter" || e.keyCode == 13) {
