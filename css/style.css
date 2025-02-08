@@ -14,6 +14,7 @@
     --canvas-height: 300px;
     --player-width: 90px;
     --player-height: 60px;
+    --obstacle-fizical-width: 100px;
     --obstacle-width: 20px;
     --obstacle-wide-width: 30px;
     --obstacle-height: 50px;
@@ -89,11 +90,22 @@ body {
     width: 100%;
 }
 
+.game-section {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.left_side {
+    min-width: 400px;
+}
+
 .canvas {
     width: var(--canvas-width);
     height: var(--canvas-height);
     display: flex;
     flex-direction: column-reverse;
+    flex: 0 1 auto;
 }
 
 .moving_objects {
@@ -110,6 +122,10 @@ body {
     background-size: 50px 50px;
 }
 
+.ground_height {
+    height: 50px;
+}
+
 .player {
     width: var(--player-width);
     height: var(--player-height);
@@ -118,9 +134,16 @@ body {
     transform-origin: bottom;
 }
 
+.right_side {
+    display: flex;
+    flex-direction: column-reverse;
+    height: 100%;
+    min-width: 400px;
+}
+
 .obstacles {
     display: flex;
-    flex-direction: row-reverse;
+    flex-direction: row;
     align-items: end;
 }
 
@@ -129,17 +152,17 @@ body {
 }
 
 .obstacle-normal {
-    width: var(--obstacle-width);
+    width: var(--obstacle-fizical-width);
     height: var(--obstacle-height);
 }
 
 .obstacle-tall {
-    width: var(--obstacle-width);
+    width: var(--obstacle-fizical-width);
     height: var(--obstacle-tall-height);
 }
 
 .obstacle-wide {
-    width: var(--obstacle-wide-width);
+    width: var(--obstacle-fizical-width);
     height: var(--obstacle-height);
 }
 
@@ -147,18 +170,25 @@ body {
     background-image: url(../images/iceCream.png);
     background-size: var(--obstacle-width) var(--obstacle-height);
     background-position-y: bottom;
+    background-position-x: left;
+    background-repeat: no-repeat;
+
 }
 
 .obstacle2_visuals {
     background-image: url(../images/obstace_1.png);
     background-size: var(--obstacle-wide-width) var(--obstacle-height);
     background-position-y: bottom;
+    background-position-x: left;
+    background-repeat: no-repeat;
 }
 
 .obstacle3_visuals {
     background-image: url(../images/tree.png);
-    background-size: var(--obstacle-width) var(--obstacle-tall-height);
+    background-size: var(--obstacle-wide-width) var(--obstacle-tall-height);
     background-position-y: bottom;
+    background-position-x: left;
+    background-repeat: no-repeat;
 }
 
 .pause {

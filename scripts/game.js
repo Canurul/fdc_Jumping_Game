@@ -16,11 +16,14 @@ const sounds = {
     collision: document.querySelector('.collisionSound')
 };
 
+let OBSTACLE_SPAWN_FREQUENCY = 1500;
+
 const INTRO_HYPE_MESSAGES = ['READY', 'SET', 'GO!', 'Press SPACE to JUMP'];
 const TIME_BETWEEN_MESSAGES = 1000;
 
 let introMessageCompleted = 0;
 let obstacle_widths = [];
+let obstacle_visual_widths = [];
 let obstacle_heights = [];
 
 document.body.onkeyup = function (e) {
@@ -129,6 +132,7 @@ const reset = function () {
     is_player_in_side_danger = false;
     has_game_started = false;
     is_player_jumping = false;
+    obstacle_heights = [];
 
     score = 0;
     updateScoreDisplay();
@@ -143,11 +147,6 @@ const showInstruction = (message) => {
 
 const subscribeToEvents = function (element) {
     element.addEventListener("animationstart", function (e) {
-        if (e.animationName == 'obstacle_move') {
-            TIMEOUTS.push(setTimeout(() => {
-                setPlayerInSideDanger(true);
-            }, calculateTimeToSideImpact()));
-        }
 
         if (e.animationName == 'player_jump') {
             is_player_jumping = true;
@@ -169,12 +168,7 @@ const subscribeToEvents = function (element) {
         if (e.animationName == 'obstacle_move') {
             setPlayerInSideDanger(false);
             clearObstacleVisuals(e.target);
-
-            if (obstacle_widths.length >= OBSTACLES.length)
-                obstacle_widths.splice(0, 1);
-
-            if (obstacle_heights.length >= OBSTACLES.length)
-                obstacle_heights.splice(0, 1);
+            obstacle_heights.splice(0, 1);
 
             removeClass('move', e.target);
             incrementScore();
@@ -204,29 +198,52 @@ const initObstacle = function (obstacle) {
     obstacle.classList.add(obstacleType);
     obstacle.classList.remove('obstacle-normal', 'obstacle-tall', 'obstacle-wide');
 
+    let obstacleIndex;
+    obstacle.classList.forEach((element) => {
+        OBSTACLES.forEach((obstacle, index) => {
+            if (element == `index_${index}`)
+                obstacleIndex = index;
+        });
+    });
+
     switch (obstacleType) {
         case VISUALS[0]:
-            obstacle_widths.push(obstacle_normal_width);
+            obstacle_widths[obstacleIndex] = obstacle_fizical_width;
+            obstacle_visual_widths[obstacleIndex] = obstacle_normal_width;
             obstacle_heights.push(obstacle_normal_height);
             addClass('obstacle-normal', obstacle);
             break;
         case VISUALS[1]:
-            obstacle_widths.push(obstacle_wide_width);
+            obstacle_widths[obstacleIndex] = obstacle_fizical_width;
+            obstacle_visual_widths[obstacleIndex] = obstacle_wide_width;
             obstacle_heights.push(obstacle_normal_height);
             addClass('obstacle-wide', obstacle);
             break;
         case VISUALS[2]:
-            obstacle_widths.push(obstacle_normal_width);
+            obstacle_widths[obstacleIndex] = obstacle_fizical_width;
+            obstacle_visual_widths[obstacleIndex] = obstacle_normal_width;
             obstacle_heights.push(obstacle_tall_height);
             addClass('obstacle-tall', obstacle);
             break;
     }
 
-    let startPosition = obstacle_widths.slice(0, 1);
-    let endPosition = (canvas_width - obstacle_widths.reduce((accumulator, currentValue) => accumulator + currentValue, 0)) * -1;
+    let widths_sum = 0;
+    for (let i = 0; i <= obstacleIndex; i++) {
+        if (Number(obstacle_widths[i]))
+            widths_sum += obstacle_widths[i]
+    }
+
+    let startPosition = (widths_sum - (obstacle_widths[obstacleIndex] - obstacle_visual_widths[obstacleIndex])) * -1;
+    let endPosition = (canvas_width - startPosition - obstacle_visual_widths[obstacleIndex]) * -1;
+
     obstacle.style.setProperty('--obstacle-start-position', `${startPosition}px`);
     obstacle.style.setProperty('--obstacle-move-distance', `${endPosition}px`);
     addClass('move', obstacle);
+
+    let timeToImpact = ((canvas_width - player_width) / canvas_width) * obstacle_move_duration;
+    TIMEOUTS.push(setTimeout(() => {
+        setPlayerInSideDanger(true);
+    }, timeToImpact * 1000));
 }
 
 const getObstacle = function () {
@@ -239,10 +256,15 @@ const getObstacle = function () {
     let newObstacle;
     if (OBSTACLES.length != 0) {
         newObstacle = ORIGINAL_OBSTACLE.cloneNode();
+        OBSTACLES.forEach((obstacle, index) => {
+            newObstacle.classList.remove(`index_${index}`)
+        });
         ORIGINAL_OBSTACLE.parentNode.appendChild(newObstacle);
     } else {
         newObstacle = ORIGINAL_OBSTACLE;
     }
+
+    addClass(`index_${OBSTACLES.length}`, newObstacle);
 
     subscribeToEvents(newObstacle);
     OBSTACLES.push(newObstacle);
@@ -254,7 +276,7 @@ const spawnObstacles = function () {
     let newObstacle = getObstacle();
     initObstacle(newObstacle);
 
-    TIMEOUTS.push(setTimeout(spawnObstacles, obstacle_spawn_frequency));
+    TIMEOUTS.push(setTimeout(spawnObstacles, OBSTACLE_SPAWN_FREQUENCY));
 }
 
 const spawnPlayer = function () {
@@ -277,16 +299,10 @@ const updateScoreDisplay = function () {
     TOP_SCORE_DISPLAY.innerText = `TOP Score: ${top_score}`;
 }
 
-const calculateTimeToSideImpact = function () {
-    let width = obstacle_widths.slice(-1);
-    let result = (((canvas_width - player_width - width * 0.2) / canvas_width)) * obstacle_move_duration;
-    return result * 1000;
-}
-
 const calculateTimeToHightSafety = function () {
-    let height = obstacle_heights.slice(-1);
+    let height = obstacle_heights[0];
     let result = ((height / player_jump_height) * (player_jump_duration / 2));
-    return result.toFixed(2) * 1000;
+    return result * 1000;
 }
 
 const addClass = function (item, element) {
@@ -313,7 +329,7 @@ let obstacle_normal_height = parseInt(BODY_COMPUTED_STYLE.getPropertyValue('--ob
 let obstacle_tall_height = parseInt(BODY_COMPUTED_STYLE.getPropertyValue('--obstacle-tall-height'));
 let obstacle_normal_width = parseInt(BODY_COMPUTED_STYLE.getPropertyValue('--obstacle-width'));
 let obstacle_wide_width = parseInt(BODY_COMPUTED_STYLE.getPropertyValue('--obstacle-wide-width'));
-let obstacle_spawn_frequency = 2500;
+let obstacle_fizical_width = parseInt(BODY_COMPUTED_STYLE.getPropertyValue('--obstacle-fizical-width'));
 
 window.addEventListener("resize", (event) => {
     canvas_width = parseInt(BODY_COMPUTED_STYLE.getPropertyValue('--canvas-width'));
@@ -325,6 +341,7 @@ window.addEventListener("resize", (event) => {
     obstacle_tall_height = parseInt(BODY_COMPUTED_STYLE.getPropertyValue('--obstacle-tall-height'));
     obstacle_normal_width = parseInt(BODY_COMPUTED_STYLE.getPropertyValue('--obstacle-width'));
     obstacle_wide_width = parseInt(BODY_COMPUTED_STYLE.getPropertyValue('--obstacle-wide-width'));
+    obstacle_fizical_width = parseInt(BODY_COMPUTED_STYLE.getPropertyValue('--obstacle-fizical-width'));
 });
 
 showInstruction('Press SPACE to START');
