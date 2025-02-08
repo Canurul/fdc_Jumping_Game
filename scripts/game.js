@@ -127,6 +127,9 @@ const reset = function () {
         element.classList.remove('move', 'pause');
     });
 
+    __timeouts.forEach((element) => clearTimeout(element));
+    __timeouts = [];
+
     GAME_INSTRUCTION_ELEMENT.classList.remove("intro");
     PLAYER.classList.remove('jump', 'pause', 'animate_player', 'dead');
 
