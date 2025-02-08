@@ -64,6 +64,13 @@ const startGame = function () {
 
     GAME_INSTRUCTION_ELEMENT.classList.remove("intro");
 
+    frequency_check_interval = setInterval(() => {
+        if (__obstacle_spawn_frequency > MAX_FREQUENCY)
+            __obstacle_spawn_frequency -= FREQUENCY_CHANGE_STEP;
+        else
+            clearInterval(frequency_check_interval);
+    }, FREQUENCY_CHANGE_RATE);
+
     spawnPlayer();
     spawnObstacles();
     __has_game_started = true;
@@ -296,13 +303,7 @@ const removeClass = function (item, element) {
 }
 
 let __obstacle_spawn_frequency = MIN_FREQUENCY;
-let frequency_check_interval = setInterval(() => {
-    if (__obstacle_spawn_frequency > MAX_FREQUENCY)
-        __obstacle_spawn_frequency -= FREQUENCY_CHANGE_STEP;
-    else
-        clearInterval(frequency_check_interval);
-}, FREQUENCY_CHANGE_RATE);
-
+let frequency_check_interval;
 let __top_score = 0;
 let __score = 0;
 let __has_game_started = false;
