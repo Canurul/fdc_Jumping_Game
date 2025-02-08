@@ -15,8 +15,9 @@
     --player-width: 90px;
     --player-height: 60px;
     --obstacle-fizical-width: 100px;
-    --obstacle-width: 20px;
-    --obstacle-wide-width: 30px;
+    --obstacle-narrow-width: 30px;
+    --obstacle-width: 50px;
+    --obstacle-wide-width: 80px;
     --obstacle-height: 50px;
     --obstacle-tall-height: 75px;
     --jump-height: 150px;
@@ -166,26 +167,41 @@ body {
     height: var(--obstacle-height);
 }
 
-.obstacle1_visuals {
+.icecream {
     background-image: url(../images/iceCream.png);
+    background-size: var(--obstacle-narrow-width) var(--obstacle-height);
+    background-position-y: bottom;
+    background-position-x: left;
+    background-repeat: no-repeat;
+}
+
+.trashcan {
+    background-image: url(../images/trashcan.png);
+    background-size: var(--obstacle-narrow-width) var(--obstacle-height);
+    background-position-y: bottom;
+    background-position-x: left;
+    background-repeat: no-repeat;
+}
+
+.fence {
+    background-image: url(../images/obstace_1.png);
     background-size: var(--obstacle-width) var(--obstacle-height);
     background-position-y: bottom;
     background-position-x: left;
     background-repeat: no-repeat;
-
 }
 
-.obstacle2_visuals {
-    background-image: url(../images/obstace_1.png);
-    background-size: var(--obstacle-wide-width) var(--obstacle-height);
+.tree {
+    background-image: url(../images/tree.png);
+    background-size: var(--obstacle-width) var(--obstacle-tall-height);
     background-position-y: bottom;
     background-position-x: left;
     background-repeat: no-repeat;
 }
 
-.obstacle3_visuals {
-    background-image: url(../images/tree.png);
-    background-size: var(--obstacle-wide-width) var(--obstacle-tall-height);
+.car {
+    background-image: url(../images/car.png);
+    background-size: var(--obstacle-wide-width) var(--obstacle-height);
     background-position-y: bottom;
     background-position-x: left;
     background-repeat: no-repeat;
@@ -303,8 +319,10 @@ body {
         --obstacle-move-duration: 2s;
         --player-width: 60px;
         --player-height: 40px;
-        --obstacle-width: 14px;
-        --obstacle-wide-width: 20px;
+        --obstacle-fizical-width: 80px;
+        --obstacle-narrow-width: 20px;
+        --obstacle-width: 37px;
+        --obstacle-wide-width: 67px;
         --obstacle-height: 37px;
         --obstacle-tall-height: 50px;
         --jump-height: 100px;

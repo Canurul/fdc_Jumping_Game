@@ -5,7 +5,7 @@ const TOP_SCORE_DISPLAY = document.querySelector('.top-score');
 const GAME_INSTRUCTION_ELEMENT = document.querySelector('.instruction-text');
 
 const BODY_COMPUTED_STYLE = window.getComputedStyle(document.body);
-const VISUAL_TYPES = ['obstacle1_visuals', 'obstacle2_visuals', 'obstacle3_visuals'];
+const VISUAL_TYPES = ['icecream', 'trashcan', 'fence', 'car', 'tree'];
 
 const sounds = {
     background: document.querySelector('.backgroundMusic'),
@@ -201,18 +201,20 @@ const initObstacle = function (obstacle) {
 
     switch (obstacleType) {
         case VISUAL_TYPES[0]:
+        case VISUAL_TYPES[1]:
             __obstacle_widths[obstacleIndex] = __obstacle_fizical_width;
             __obstacle_visual_widths[obstacleIndex] = __obstacle_normal_width;
             __obstacle_heights.push(__obstacle_normal_height);
             addClass('obstacle-normal', obstacle);
             break;
-        case VISUAL_TYPES[1]:
+        case VISUAL_TYPES[2]:
+        case VISUAL_TYPES[3]:
             __obstacle_widths[obstacleIndex] = __obstacle_fizical_width;
             __obstacle_visual_widths[obstacleIndex] = __obstacle_wide_width;
             __obstacle_heights.push(__obstacle_normal_height);
             addClass('obstacle-wide', obstacle);
             break;
-        case VISUAL_TYPES[2]:
+        case VISUAL_TYPES[4]:
             __obstacle_widths[obstacleIndex] = __obstacle_fizical_width;
             __obstacle_visual_widths[obstacleIndex] = __obstacle_normal_width;
             __obstacle_heights.push(__obstacle_tall_height);
