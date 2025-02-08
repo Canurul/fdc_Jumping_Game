@@ -305,5 +305,6 @@ body {
         --obstacle-height: 37px;
         --obstacle-tall-height: 50px;
         --jump-height: 100px;
+        --jump-duration: 0.8s;
     }
 }
