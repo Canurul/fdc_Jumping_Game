@@ -136,6 +136,7 @@ const reset = function () {
     __has_game_started = false;
     __is_player_jumping = false;
     __obstacle_heights = [];
+    __obstacle_spawn_frequency = MIN_FREQUENCY;
 
     clearInterval(frequency_check_interval);
 
@@ -260,7 +261,7 @@ const spawnObstacles = function () {
     let newObstacle = getObstacle();
     initObstacle(newObstacle);
 
-    __timeouts.push(setTimeout(spawnObstacles, obstacle_spawn_frequency));
+    __timeouts.push(setTimeout(spawnObstacles, __obstacle_spawn_frequency));
 }
 
 const spawnPlayer = function () {
@@ -291,10 +292,10 @@ const removeClass = function (item, element) {
     if (element.classList.contains(item)) element.classList.remove(item);
 }
 
-let obstacle_spawn_frequency = MIN_FREQUENCY;
+let __obstacle_spawn_frequency = MIN_FREQUENCY;
 let frequency_check_interval = setInterval(() => {
-    if (obstacle_spawn_frequency > MAX_FREQUENCY)
-        obstacle_spawn_frequency -= FREQUENCY_CHANGE_STEP;
+    if (__obstacle_spawn_frequency > MAX_FREQUENCY)
+        __obstacle_spawn_frequency -= FREQUENCY_CHANGE_STEP;
     else
         clearInterval(frequency_check_interval);
 }, FREQUENCY_CHANGE_RATE);
