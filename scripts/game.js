@@ -19,7 +19,7 @@ const TIME_BETWEEN_MESSAGES = 1000;
 const MAX_FREQUENCY = 1000;
 const MIN_FREQUENCY = 3000;
 const FREQUENCY_CHANGE_STEP = 500;
-const FREQUENCY_CHANGE_RATE = 10 * 1000;
+const FREQUENCY_CHANGE_RATE = 5 * 1000;
 
 document.body.onkeyup = function (e) {
     if (e.code == "Enter" || e.keyCode == 13) {
@@ -77,8 +77,7 @@ const gameOver = function () {
 
     __timeouts.forEach((element) => clearTimeout(element));
     __obstacles.forEach((element) => { element.classList.add('pause'); });
-    PLAYER.classList.add('pause');
-    PLAYER.classList.add('dead');
+    PLAYER.classList.add('pause', 'dead');
 
     showInstruction('GAME OVER');
     __timeouts.push(setTimeout(() => showInstruction('Press ENTER to RESET'), 2000));
@@ -98,17 +97,15 @@ const jump = function () {
     if (!__is_game_over)
         sounds.jump.play();
 
-
     removeClass('animate_player', PLAYER);
     addClass('jump', PLAYER);
 
     let timeToSafety = (__obstacle_heights[0] / __player_jump_height) * (__player_jump_duration / 2);
-    let timeBackDown = __player_jump_duration - timeToSafety;
-
     __timeouts.push(setTimeout(() => {
         setPlayerInHeightDanger(false);
     }, timeToSafety * 1000));
 
+    let timeBackDown = __player_jump_duration - timeToSafety;
     __timeouts.push(setTimeout(() => {
         setPlayerInHeightDanger(true);
     }, timeBackDown * 1000));
@@ -127,15 +124,11 @@ const reset = function () {
 
     __obstacles.forEach((element) => {
         clearObstacleVisuals(element);
-        element.classList.remove('move');
-        element.classList.remove('pause');
+        element.classList.remove('move', 'pause');
     });
 
     GAME_INSTRUCTION_ELEMENT.classList.remove("intro");
-    PLAYER.classList.remove('jump');
-    PLAYER.classList.remove('pause');
-    PLAYER.classList.remove('animate_player');
-    PLAYER.classList.remove('dead');
+    PLAYER.classList.remove('jump', 'pause', 'animate_player', 'dead');
 
     __introMessageCompleted = 0;
     __is_player_in_hight_danger = true;
@@ -189,7 +182,6 @@ const initObstacle = function (obstacle) {
 
     let obstacleType = VISUAL_TYPES[Math.floor(Math.random() * VISUAL_TYPES.length)];
     obstacle.classList.add(obstacleType);
-    obstacle.classList.remove('obstacle-normal', 'obstacle-tall', 'obstacle-wide');
 
     let obstacleIndex;
     obstacle.classList.forEach((element) => {
@@ -205,20 +197,17 @@ const initObstacle = function (obstacle) {
             __obstacle_widths[obstacleIndex] = __obstacle_fizical_width;
             __obstacle_visual_widths[obstacleIndex] = __obstacle_normal_width;
             __obstacle_heights.push(__obstacle_normal_height);
-            addClass('obstacle-normal', obstacle);
             break;
         case VISUAL_TYPES[2]:
         case VISUAL_TYPES[3]:
             __obstacle_widths[obstacleIndex] = __obstacle_fizical_width;
             __obstacle_visual_widths[obstacleIndex] = __obstacle_wide_width;
             __obstacle_heights.push(__obstacle_normal_height);
-            addClass('obstacle-wide', obstacle);
             break;
         case VISUAL_TYPES[4]:
             __obstacle_widths[obstacleIndex] = __obstacle_fizical_width;
             __obstacle_visual_widths[obstacleIndex] = __obstacle_normal_width;
             __obstacle_heights.push(__obstacle_tall_height);
-            addClass('obstacle-tall', obstacle);
             break;
     }
 
@@ -304,7 +293,7 @@ const removeClass = function (item, element) {
 
 let obstacle_spawn_frequency = MIN_FREQUENCY;
 let frequency_check_interval = setInterval(() => {
-    if (obstacle_spawn_frequency > MIN_FREQUENCY)
+    if (obstacle_spawn_frequency > MAX_FREQUENCY)
         obstacle_spawn_frequency -= FREQUENCY_CHANGE_STEP;
     else
         clearInterval(frequency_check_interval);

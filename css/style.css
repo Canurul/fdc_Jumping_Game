@@ -97,10 +97,6 @@ body {
     justify-content: space-evenly;
 }
 
-.left_side {
-    min-width: 400px;
-}
-
 .canvas {
     width: var(--canvas-width);
     height: var(--canvas-height);
@@ -135,6 +131,10 @@ body {
     transform-origin: bottom;
 }
 
+.left_side {
+    min-width: 400px;
+}
+
 .right_side {
     display: flex;
     flex-direction: column-reverse;
@@ -148,60 +148,39 @@ body {
     align-items: end;
 }
 
-.obstacle {
-    transform-origin: left;
-}
-
-.obstacle-normal {
-    width: var(--obstacle-fizical-width);
-    height: var(--obstacle-height);
-}
-
-.obstacle-tall {
-    width: var(--obstacle-fizical-width);
-    height: var(--obstacle-tall-height);
-}
-
-.obstacle-wide {
-    width: var(--obstacle-fizical-width);
-    height: var(--obstacle-height);
-}
-
 .icecream {
     background-image: url(../images/iceCream.png);
     background-size: var(--obstacle-narrow-width) var(--obstacle-height);
-    background-position-y: bottom;
-    background-position-x: left;
-    background-repeat: no-repeat;
+    height: var(--obstacle-height);
 }
 
 .trashcan {
     background-image: url(../images/trashcan.png);
     background-size: var(--obstacle-narrow-width) var(--obstacle-height);
-    background-position-y: bottom;
-    background-position-x: left;
-    background-repeat: no-repeat;
+    height: var(--obstacle-height);
 }
 
 .fence {
     background-image: url(../images/obstace_1.png);
     background-size: var(--obstacle-width) var(--obstacle-height);
-    background-position-y: bottom;
-    background-position-x: left;
-    background-repeat: no-repeat;
+    height: var(--obstacle-height);
 }
 
 .tree {
     background-image: url(../images/tree.png);
     background-size: var(--obstacle-width) var(--obstacle-tall-height);
-    background-position-y: bottom;
-    background-position-x: left;
-    background-repeat: no-repeat;
+    height: var(--obstacle-tall-height);
 }
 
 .car {
     background-image: url(../images/car.png);
     background-size: var(--obstacle-wide-width) var(--obstacle-height);
+    height: var(--obstacle-height);
+}
+
+.obstacle {
+    transform-origin: left;
+    width: var(--obstacle-fizical-width);
     background-position-y: bottom;
     background-position-x: left;
     background-repeat: no-repeat;
